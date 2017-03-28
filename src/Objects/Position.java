@@ -52,12 +52,29 @@ public class Position {
 	
 	public Position moveForward(){
 		if(this.direction != null){
-			
+			//Exception
+		}
+		Position newPosition = new Position(this);
+		switch(this.direction){
+		case NORTH:
+			newPosition.add(0, 1);
+			break;
+		case SOUTH:
+			newPosition.add(0, -1);
+			break;
+		case EAST:
+			newPosition.add(1, 0);
+			break;
+		case WEST:
+			newPosition.add(-1, 0);
+			break;
 		}
 		
-		Position newPosition = new Position(this);
-		
-		
 		return newPosition;
+	}
+	
+	public void add(int x, int y){
+		this.x+=x;
+		this.y+=y;
 	}
 }

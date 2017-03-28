@@ -9,68 +9,29 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-import Objects.Command;
 import Objects.Table;
 import Objects.ToyRobot;
 
 public class ToyRobotSimulatorMain {
+	
 	public static void main(String[] args) throws IOException{
 		
 		InputStream is = new FileInputStream(new File("/Users/nav/Documents/sowmya/ToyRobot/ToyRobot_REA/src/ToyRobotInput/InputFile"));
 		BufferedReader br = new BufferedReader(new InputStreamReader(is));
 		
 		List<String> commands = new ArrayList<String>();
-
+		System.out.println("Input Line : ");
 		String line = null;
 		while((line = br.readLine()) != null){
-			System.out.println("Input Line : " + line);
+			System.out.println(line);
 			commands.add(line);
 		}
-		
 		Table table = new Table(5,5);
-		boolean output = placeRobot(0,0);
 		ToyRobot robot = new ToyRobot();
+		ToyRobotSimulator robotSimulator = new ToyRobotSimulator(robot, table);
+		String output = robotSimulator.executeCommands(commands);
 		
-		
-		for(String command : commands){
-			Command commandType = getCommandType(command);
-			switch(commandType){
-			
-				case LEFT:
-					output = robot.turnLeft();
-							break;
-				case RIGHT:
-					output = robot.turnRight();
-							break;
-				case MOVE:
-					
-							break;
-				case PLACE:
-							break;
-				case REPORT:
-							break;
-			}
-		}
+		System.out.println("\n"+output);
 		br.close();
-	}
-
-	private static boolean placeRobot(int i, int j) {
-
-		
-		
-		return false;
-	}
-
-	private static Command getCommandType(String command) {
-		
-		Command inputCommand = null;
-		Command[] commands = Command.values();
-		for(Command com: commands){
-			if(command.contains(com.toString())){
-				 inputCommand = com;
-				break;
-			}
-		}
-		return inputCommand;
 	}
 }
