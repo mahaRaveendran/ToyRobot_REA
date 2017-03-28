@@ -20,9 +20,9 @@ public enum Direction {
 	private Direction rotate(int i) {
 		Direction[] dir = Direction.values();
 		int dirSize = dir.length;
-		int newDirectionInd = (this.directionInd + i) > 0 ? 
-				(this.directionInd + i) % dirSize 
-				: dirSize - 1;
+		int newDirectionInd = (this.directionInd + i) < 0 ? 
+				dirSize - 1
+				: (this.directionInd + i) % dirSize ;
 		return dir[newDirectionInd];
 	}
 	
