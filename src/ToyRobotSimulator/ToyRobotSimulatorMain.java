@@ -11,10 +11,11 @@ import java.util.List;
 
 import Objects.Table;
 import Objects.ToyRobot;
+import ToyRobotException.ToyRobotException;
 
 public class ToyRobotSimulatorMain {
 	
-	public static void main(String[] args) throws IOException{
+	public static void main(String[] args) throws IOException, ToyRobotException{
 		
 		InputStream is = new FileInputStream(new File("/Users/nav/Documents/sowmya/ToyRobot/ToyRobot_REA/src/ToyRobotInput/InputFile"));
 		BufferedReader br = new BufferedReader(new InputStreamReader(is));
@@ -26,6 +27,7 @@ public class ToyRobotSimulatorMain {
 			System.out.println(line);
 			commands.add(line);
 		}
+		
 		Table table = new Table(5,5);
 		ToyRobot robot = new ToyRobot();
 		ToyRobotSimulator robotSimulator = new ToyRobotSimulator(robot, table);

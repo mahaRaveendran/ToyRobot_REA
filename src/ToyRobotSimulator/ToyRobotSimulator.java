@@ -7,6 +7,7 @@ import Objects.Direction;
 import Objects.Position;
 import Objects.Table;
 import Objects.ToyRobot;
+import ToyRobotException.ToyRobotException;
 
 public class ToyRobotSimulator {
 	
@@ -32,21 +33,24 @@ public class ToyRobotSimulator {
 		Command inputCommand = null;
 		Command[] commands = Command.values();
 		for(Command com: commands){
-			if(command.contains(com.toString())){
+			if(command.toUpperCase().contains(com.toString().toUpperCase())){
 				 inputCommand = com;
 				break;
 			}
 		}
 		return inputCommand;
 	}
-	public String executeCommands(List<String> commands) {
+	public String executeCommands(List<String> commands) throws ToyRobotException {
 		// TODO Auto-generated method stub
 		String output = null;
+		int count = 0;
 		
 		for(String command : commands){
 			Command commandType = getCommandType(command);
+			if(commandType.toString().equalsIgnoreCase(Command.PLACE.toString()))
+				count++;
 			switch(commandType){
-			
+				
 				case LEFT:
 					output = String.valueOf(robot.turnLeft());
 							break;
@@ -73,6 +77,8 @@ public class ToyRobotSimulator {
 					//exception;
 			}
 		}
+		if(count == 0)
+			output = "INVALID INPUT FILE :: No Valid Place Commands Found in Input File";
 		return output;
 	}
 
@@ -84,16 +90,16 @@ public class ToyRobotSimulator {
 		return robot.getPosition().getX()+","+robot.getPosition().getY()+","+robot.getPosition().getDirection().toString()+"";
 	}
 
-	private Position getPlaceParameters(String command) {
+	private Position getPlaceParameters(String command) throws ToyRobotException {
 		
 		String[] placeArguments = command.split(" ");
 		String[] positionParams = placeArguments[1].split(",");
 		if(positionParams.length < 3 || positionParams[0] == null || 
 				positionParams[1] == null || positionParams[2] == null){
-			//exception
+			throw new ToyRobotException("INVALID PLACE COMMAND STRUCTURE");
 		}
 		Position position = new Position(Integer.parseInt(positionParams[0]), 
-				Integer.parseInt(positionParams[1]), Direction.valueOf(positionParams[2]));
+				Integer.parseInt(positionParams[1]), Direction.valueOf(positionParams[2].toUpperCase()));
 		return position;
 	}
 }
