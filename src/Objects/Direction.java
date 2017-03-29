@@ -49,8 +49,7 @@ public enum Direction {
 		Direction[] dir = Direction.values();
 		int dirSize = dir.length;
 		int newDirectionInd = (this.directionInd + i) < 0 ? 
-				dirSize - 1
-				: (this.directionInd + i) % dirSize ;
+				dirSize - 1 : (this.directionInd + i) % dirSize ;
 		return dir[newDirectionInd];
 	}
 	

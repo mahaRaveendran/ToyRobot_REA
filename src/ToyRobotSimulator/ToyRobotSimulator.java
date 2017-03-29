@@ -83,46 +83,45 @@ public class ToyRobotSimulator {
 			switch(commandType){
 				
 				case LEFT:
-					if(flag){
-					validateFormat(command);
-					robot.turnLeft();
-					output = "";}
+							if(flag){
+								validateFormat(command);
+								robot.turnLeft();
+								output = "";}
 							break;
 				case RIGHT:
-					if(flag){
-					validateFormat(command);
-					robot.turnRight();
-					output = "";
-					}
+							if(flag){
+								validateFormat(command);
+								robot.turnRight();
+								output = "";}
 							break;
 				case MOVE:
-					if(flag){
-					validateFormat(command);
-				    Position newPosition = robot.getPosition().moveForward();
-				    if(table.isValidPosition(newPosition))
-				    	robot.moveRobot(newPosition);
-				    output = " ";}
-					break;
+							if(flag){
+								validateFormat(command);
+								Position newPosition = robot.getPosition().moveForward();
+								if(table.isValidPosition(newPosition))
+									robot.moveRobot(newPosition);
+								output = " ";}
+							break;
 				case PLACE:
-					Position position = getPlaceParameters(command);
-					if(table.isValidPosition(position)){
-						output = String.valueOf(placeRobot(position));
-						flag = true;
-					}
-					else{
-						output = " ";}
+							Position position = getPlaceParameters(command);
+							if(table.isValidPosition(position)){
+								output = String.valueOf(placeRobot(position));
+								flag = true;}
+							else{
+								output = " ";}
 							break;
 				case REPORT:
-					if(flag){
-					validateFormat(command);
-					output = report();}
+							if(flag){
+								validateFormat(command);
+								output = report();}
 							break;
 				default:
-					output = "";
+							output = "";
 			}
 		}
 		if(count == 0)
 			output = "INVALID INPUT FILE :: No Valid Place Commands Found in Input File";
+		
 		return output;
 	}
 	
@@ -149,12 +148,12 @@ public class ToyRobotSimulator {
 	 * Method : report
 	 * 			reports the position of the robot on the table
 	 * @return String
+	 * @throws ToyRobotException 
 	 */
-	private String report() {
+	private String report() throws ToyRobotException {
 		if(robot.getPosition() == null){
-			//exception
+			throw new ToyRobotException("report :: Position Object is null");
 		}
-		// TODO Auto-generated method stub
 		return robot.getPosition().getX()+","+robot.getPosition().getY()+","+robot.getPosition().getDirection().toString()+"";
 	}
 	
