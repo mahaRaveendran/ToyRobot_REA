@@ -1,5 +1,14 @@
 package Objects;
 
+/**
+* The Position class determines the exact 
+* position of the toy robot
+*
+* @author  Mahalakshmi Raveendran
+* @version 1.0
+* @since   2017-03-29
+*/
+
 public class Position {
 	private int x;
 	private int y;
@@ -41,6 +50,13 @@ public class Position {
 		this.direction = p.direction;
 	}
 	
+	/**
+	 * Method : changePosition
+	 * 			Change the position of the toy robot
+	 * 			to a new position from the current position
+	 * @param p Position
+	 * @return Position
+	 */
 	public Position changePosition(Position p){
 		Position pos = new Position();
 		pos.x = this.x+p.x;
@@ -50,6 +66,11 @@ public class Position {
 		
 	}
 	
+	/**
+	 * Method : moveForward
+	 * 			move forward by one position in the direction specified
+	 * @return Position
+	 */
 	public Position moveForward(){
 		if(this.direction != null){
 			//Exception
@@ -72,7 +93,14 @@ public class Position {
 		
 		return newPosition;
 	}
-	
+	/**
+	 * Method : add
+	 * 			add the new position to the current position 
+	 * 			of the toy robot
+	 * @param x int 
+	 * @param y int
+	 * @return void
+	 */
 	public void add(int x, int y){
 		this.x+=x;
 		this.y+=y;

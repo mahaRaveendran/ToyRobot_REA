@@ -1,5 +1,13 @@
 package ToyRobotException;
 
+/**
+* The ToyRobotException class contains the custom exception
+* 	for the Toy Robot Simulator
+*
+* @author  Mahalakshmi Raveendran
+* @version 1.0
+* @since   2017-03-29
+*/
 public class ToyRobotException extends Exception{
 
 	/**

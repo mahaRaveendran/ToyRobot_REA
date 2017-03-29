@@ -1,5 +1,14 @@
 package Objects;
 
+/**
+* The Table class outlines the structure 
+* of the board for the movement of the toy robot
+*
+* @author  Mahalakshmi Raveendran
+* @version 1.0
+* @since   2017-03-29
+*/
+
 public class Table {
 	
 	int row;
@@ -28,6 +37,13 @@ public class Table {
 		this.column = 0;
 	}
 	
+	/**
+	 * Method : isValidPosition
+	 * 			finds if the given position if a valid position
+	 * 			that is inside the square board for the toy robot to move
+	 * @param p Position
+	 * @return Position
+	 */
 	public boolean isValidPosition(Position position){
 		boolean result = true;
 		if((position.getX() > this.column) || (position.getY() > this.row) ||
