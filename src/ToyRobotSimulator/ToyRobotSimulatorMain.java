@@ -24,6 +24,9 @@ import ToyRobotException.ToyRobotException;
 
 public class ToyRobotSimulatorMain {
 	
+	private static final int row = 5;
+	private static final int column = 5;
+	
 	/**
 	 * Main Method : main thread of execution
 	 * @param args String[]
@@ -32,7 +35,7 @@ public class ToyRobotSimulatorMain {
 	public static void main(String[] args) throws IOException, ToyRobotException{
 		
 		// InputFile.txt - contains the commands that are execute for the movement of the Toy Robot
-		InputStream is = new FileInputStream(new File("/Users/nav/Documents/sowmya/ToyRobot/ToyRobot_REA/src/ToyRobotInput/InputFile"));
+		InputStream is = new FileInputStream(new File("src/ToyRobotInput/InputFile"));
 		BufferedReader br = new BufferedReader(new InputStreamReader(is));
 		
 		List<String> commands = new ArrayList<String>();
@@ -45,7 +48,7 @@ public class ToyRobotSimulatorMain {
 		}
 		
 		//Initialize Square Board(5*5) as the Table 
-		Table table = new Table(5,5);
+		Table table = new Table(row,column);
 		ToyRobot robot = new ToyRobot();
 		ToyRobotSimulator robotSimulator = new ToyRobotSimulator(robot, table);
 		//Execute Commands

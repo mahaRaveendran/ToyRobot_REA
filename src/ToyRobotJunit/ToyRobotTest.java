@@ -9,9 +9,7 @@ import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
 import Objects.Table;
 import Objects.ToyRobot;
@@ -33,18 +31,15 @@ public class ToyRobotTest {
 		ToyRobotSimulator testerRobot = new ToyRobotSimulator(robot, table);
 		List<String> commands;
 
-		@Rule
-		public ExpectedException thrown = ExpectedException.none();
-		
 		/**
-		 * throw Expected Exception When Invalid Commands.
+		 * throw When Invalid Commands.
 		 * @result Throws a toy Robot Exception when there is no 
 		 * 			Valid Place Commands found in the input
 		 */
-		@Test(expected = ToyRobotException.class)
-		public void throwExpectedExceptionWhenInvalidCommads() throws ToyRobotException{
-			thrown.expect(ToyRobotException.class);
-			thrown.expectMessage("INVALID INPUT FILE :: No Valid Place Commands Found in Input File");
+		@Test
+		public void WhenInvalidCommads() throws ToyRobotException{
+			
+			int count = 0;
 			
 			ArrayList<String> input = new ArrayList<String>();
 			input.add("MOVE\n REPORT");
@@ -52,74 +47,90 @@ public class ToyRobotTest {
 			input.add("PLACE 0,0\nMOVE\nREPORT");
 			input.add("PLACE 0,NORTH\nMOVE\nREPORT");
 			input.add("PLACE NORTH\nMOVE\nREPORT");
-			input.add("PLACE NORTH\nMOVE\nREPORT");
-			input.add("PLACE0,0,NORTH\nMOVE\nREPORT");
+			
+			ArrayList<String> output = new ArrayList<String>();
+			output.add("INVALID INPUT FILE :: No Valid Place Commands Found in Input File");
+			output.add("INVALID PLACE COMMAND :: Invalid Place Command Parameters");
+			output.add("INVALID PLACE COMMAND :: Invalid Place Command Parameters");
+			output.add("INVALID PLACE COMMAND :: Invalid Place Command Parameters");
+			output.add("INVALID PLACE COMMAND :: Invalid Place Command Parameters");
 			
 			for(String cmd: input){
-			commands = new ArrayList<String>();
-			commands = getCommandList(cmd);
-			testerRobot.executeCommands(commands);
+				commands = new ArrayList<String>();
+				commands = getCommandList(cmd);
+				assertEquals("When Invalid Commands are given to the robot",output.get(count),testerRobot.executeCommands(commands));
+				count++;
 			}
 		}
 		
 		/**
-		 * throw Expected Exception When Invalid Move Command Type.
+		 * throw When Invalid Move Command Type has parameters.
 		 * @result Throws a toy Robot Exception when the move command
 		 * 			contains any extra parameters
 		 */
-		@Test(expected = ToyRobotException.class)
-		public void throwExpectedExceptionWhenInvalidMoveCommadType() throws ToyRobotException{
-			thrown.expect(ToyRobotException.class);
-			thrown.expectMessage("INVALID COMMAND TYPE :: MOVE 0 cannot have parameters");
+		@Test
+		public void throwWhenInvalidMoveCommadParams() throws ToyRobotException{
 			
 			String input = "PLACE 0,0,NORTH\nMOVE 0\nLEFT\nRIGHT\nREPORT";
 			commands = getCommandList(input);
-			testerRobot.executeCommands(commands);
+			assertEquals("When Invalid move Commands are given to the robot",
+					"INVALID COMMAND TYPE :: Only PLACE command can have parameters",testerRobot.executeCommands(commands));
 		}
 		
 		/**
-		 *  throw Expected Exception When Invalid Left Command Type.
+		 *  throw When Invalid Left Command Type.
 		 * @result Throws a toy Robot Exception when the left command
 		 * 			contains any extra parameters
 		 */
-		@Test(expected = ToyRobotException.class)
-		public void throwExpectedExceptionWhenInvalidLeftCommadType() throws ToyRobotException{
-			thrown.expect(ToyRobotException.class);
-			thrown.expectMessage("INVALID COMMAND TYPE :: LEFT 0 cannot have parameters");
+		@Test
+		public void throwWhenInvalidLeftCommadParams() throws ToyRobotException{
 			
 			String input = "PLACE 0,0,NORTH\nMOVE\nLEFT 0\nRIGHT\nREPORT";
 			commands = getCommandList(input);
-			testerRobot.executeCommands(commands);
+			assertEquals("When Invalid left Commands are given to the robot",
+					"INVALID COMMAND TYPE :: Only PLACE command can have parameters",testerRobot.executeCommands(commands));
 		}
 		
 		/**
-		 *  throw Expected Exception When Invalid Right Command Type.
+		 *  throw When Invalid Right Command Type.
 		 * @result Throws a toy Robot Exception when the Right command
 		 * 			contains any extra parameters
 		 */
-		@Test(expected = ToyRobotException.class)
-		public void throwExpectedExceptionWhenInvalidRightCommadType() throws ToyRobotException{
-			thrown.expect(ToyRobotException.class);
-			thrown.expectMessage("INVALID COMMAND TYPE :: RIGHT 0 cannot have parameters");
+		@Test
+		public void throwWhenInvalidRightCommadParams() throws ToyRobotException{
 			
 			String input = "PLACE 0,0,NORTH\nMOVE\nLEFT\nRIGHT 0\nREPORT";
 			commands = getCommandList(input);
-			testerRobot.executeCommands(commands);
+			assertEquals("When Invalid right Commands are given to the robot",
+					"INVALID COMMAND TYPE :: Only PLACE command can have parameters",testerRobot.executeCommands(commands));
 		}
 		
 		/**
-		 *  throw Expected Exception When Invalid Report Command Type.
+		 *  throw  When Invalid Report Command Type.
 		 * @result Throws a toy Robot Exception when the REport command
 		 * 			contains any extra parameters
 		 */
-		@Test(expected = ToyRobotException.class)
-		public void throwExpectedExceptionWhenInvalidReportCommadType() throws ToyRobotException{
-			thrown.expect(ToyRobotException.class);
-			thrown.expectMessage("INVALID COMMAND TYPE :: REPORT 0  cannot have parameters");
+		@Test
+		public void throwWhenInvalidReportCommadParams() throws ToyRobotException{
 			
 			String input = "PLACE 0,0,NORTH\nMOVE\nLEFT\nRIGHT\nREPORT 0";
 			commands = getCommandList(input);
-			testerRobot.executeCommands(commands);
+			assertEquals("When Invalid report Commands are given to the robot",
+					"INVALID COMMAND TYPE :: Only PLACE command can have parameters",testerRobot.executeCommands(commands));
+		}
+		
+		/**
+		 *  throw  When Invalid Report Command Type.
+		 * @result Throws a toy Robot Exception when the REport command
+		 * 			contains any extra parameters
+		 */
+		@Test
+		public void throwWhenInvalidPlaceCommadParams() throws ToyRobotException{
+			
+			String input = "PLACE0,0,NORTH\nMOVE\nREPORT";
+			commands = getCommandList(input);
+			assertEquals("When Invalid report Commands are given to the robot",
+					"INVALID PLACE COMMAND :: Invalid Place Command Parameters",testerRobot.executeCommands(commands));
 		}
 		
 		/**
@@ -171,7 +182,8 @@ public class ToyRobotTest {
 		@Test
 		public void DiscardanyCommanduntilValidPlaceCommand() throws ToyRobotException{
 			
-			String input = "MOVE\nREPORT\nPLACE 0,0,NORTH\nMOVE\nREPORT\nLEFT\nPLACE 1,2,EAST\nMOVE\nMOVE\nMOVE\nMOVE\nMOVE\nMOVE\nMOVE\nPLACE 3,3,SOUTH\nPLACE 1,2,WEST\nMOVE\nREPORT\nRIGHT\nREPORT\nLEFT\nREPORT\nREPORT";
+			String input = "MOVE\nREPORT\nPLACE 0,0,NORTH\nMOVE\nREPORT\nLEFT\nPLACE 1,2,EAST\nMOVE\nMOVE\nMOVE\nMOVE\nMOVE\nMOVE"
+					+ "\nMOVE\nPLACE 3,3,SOUTH\nPLACE 1,2,WEST\nMOVE\nREPORT\nRIGHT\nREPORT\nLEFT\nREPORT\nREPORT";
 			commands = getCommandList(input);
 			assertEquals("Discard any command until a valid Place Command","0,2,WEST",testerRobot.executeCommands(commands));
 		}
@@ -183,7 +195,8 @@ public class ToyRobotTest {
 		@Test
 		public void UnorderedMultiplePlaceCommands() throws ToyRobotException{
 			
-			String input = "PLACE 0,0,NORTH\nMOVE\nREPORT\nMOVE\nREPORT\nLEFT\nPLACE 1,2,EAST\nMOVE\nMOVE\nMOVE\nMOVE\nMOVE\nMOVE\nMOVE\nPLACE 3,3,SOUTH\nPLACE 1,2,WEST\nMOVE\nREPORT\nRIGHT\nREPORT\nLEFT\nREPORT\nREPORT";
+			String input = "PLACE 0,0,NORTH\nMOVE\nREPORT\nMOVE\nREPORT\nLEFT\nPLACE 1,2,EAST\nMOVE\nMOVE\nMOVE\nMOVE"
+					+ "\nMOVE\nMOVE\nMOVE\nPLACE 3,3,SOUTH\nPLACE 1,2,WEST\nMOVE\nREPORT\nRIGHT\nREPORT\nLEFT\nREPORT\nREPORT";
 			commands = getCommandList(input);
 			assertEquals("Unordered Multiple Place Command","0,2,WEST",testerRobot.executeCommands(commands));
 		}
@@ -210,7 +223,8 @@ public class ToyRobotTest {
 			
 			String input = "PLACE 0,5,NORTH\nMOVE\nREPORT";
 			commands = getCommandList(input);
-			assertEquals("Move command does not move if the Robot is about to fall off the table","0,5,NORTH",testerRobot.executeCommands(commands));
+			assertEquals("Move command does not move if the Robot is about to fall off the table",
+					"0,5,NORTH",testerRobot.executeCommands(commands));
 		}
 		
 		/**
@@ -276,6 +290,7 @@ public class ToyRobotTest {
 			input.add("PLACE 20,5,NORTH\nMOVE\nREPORT\nLEFT\nRIGHT");
 			input.add("PLACE 20,5,NORTH\nMOVE\nREPORT\nLEFT");
 			input.add("PLACE 20,5,NORTH\nMOVE");
+			input.add("PLACE 20,5,NORTH\nMOVE");
 			
 			for(String cmd: input){
 				commands = new ArrayList<String>();
@@ -283,6 +298,50 @@ public class ToyRobotTest {
 				assertEquals("Only Report Command reports Position"," ",testerRobot.executeCommands(commands));
 			}
 		}
+		
+		/**
+		 *  Reports if any other word is given in place of a command
+		 * @result Report command will alone report the position of the 		
+		 * 			robot in the table
+		 */
+		@Test
+		public void InvalidCommand() throws ToyRobotException{
+			
+			String input = "PLACE 0,0,EAST\nMOVE\nJUMP\nMOVE\nMOVE\nMOVE\nMOVE\nRIGHT\nMOVE\nREPORT";
+			commands = getCommandList(input);
+			assertEquals("Reports if any other word is given in place of a command",
+					"INVALID INPUT FILE :: Invalid Command found in input file",testerRobot.executeCommands(commands));
+		}
+		
+		/**
+		 *  Reports commands that were issued out of the table
+		 * @result Report command will alone report the position of the 		
+		 * 			robot in the table
+		 */
+		@Test
+		public void ignoreCommandsOutisdeTable() throws ToyRobotException{
+			
+			String input = "MOVE\nMOVE\nREPORT\nLEFT\nRIGHT\nMOVE\nREPORT";
+			commands = getCommandList(input);
+			assertEquals("Reports commands that were issued out of the table",
+					"INVALID INPUT FILE :: No Valid Place Commands Found in Input File",testerRobot.executeCommands(commands));
+		}
+		
+		/**
+		 *  Reports commands if they are not PLACE,MOVE,LEFT,RIGHT,REPORT
+		 * @result Report command will alone report the position of the 		
+		 * 			robot in the table
+		 */
+		@Test
+		public void throwInvalidCommands() throws ToyRobotException{
+			
+			String input = "PLACE 0,0,EAST\nMOVE\nJUMP\nMOVE\nMOVE\nMOVE\nMOVE\nRIGHT\nMOVE\nREPORT";
+			commands = getCommandList(input);
+			assertEquals("Reports commands that are not PLACE, MOVE, LEFT, RIGHT, REPORT ",
+					"INVALID INPUT FILE :: Invalid Command found in input file",testerRobot.executeCommands(commands));
+		}
+		
+		
 		
 		/**
 		 *  Get command list from the String input

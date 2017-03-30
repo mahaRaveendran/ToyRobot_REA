@@ -77,6 +77,7 @@ public class ToyRobotSimulator {
 		for(String command : commands){
 			//retrieve Command type
 			Command commandType = getCommandType(command);
+			if(commandType != null){
 			//check if a valid place command is present in the entire set of input
 			if(commandType.toString().equalsIgnoreCase(Command.PLACE.toString()))
 				count++;
@@ -84,40 +85,64 @@ public class ToyRobotSimulator {
 				
 				case LEFT:
 							if(flag){
-								validateFormat(command);
+								if(validateFormat(command)){
 								robot.turnLeft();
-								output = "";}
+								output = "";
+								}else{
+									output = "INVALID COMMAND TYPE :: Only PLACE command can have parameters";
+									return output;
+							}}
 							break;
 				case RIGHT:
 							if(flag){
-								validateFormat(command);
+								if(validateFormat(command)){
 								robot.turnRight();
-								output = "";}
+								output = "";
+								}else{
+									output = "INVALID COMMAND TYPE :: Only PLACE command can have parameters";
+									return output;
+								}}
 							break;
 				case MOVE:
 							if(flag){
-								validateFormat(command);
+								if(validateFormat(command)){
 								Position newPosition = robot.getPosition().moveForward();
 								if(table.isValidPosition(newPosition))
 									robot.moveRobot(newPosition);
-								output = " ";}
+								output = " ";
+								}else{
+									output = "INVALID COMMAND TYPE :: Only PLACE command can have parameters";
+									return output;
+								}}
 							break;
 				case PLACE:
+							if(isValidPlaceCommand(command)){
 							Position position = getPlaceParameters(command);
 							if(table.isValidPosition(position)){
 								output = String.valueOf(placeRobot(position));
 								flag = true;}
 							else{
-								output = " ";}
+								output = " ";}}else {
+									output = "INVALID PLACE COMMAND :: Invalid Place Command Parameters";
+									return output;
+								}
 							break;
 				case REPORT:
 							if(flag){
-								validateFormat(command);
-								output = report();}
+								if(validateFormat(command)){
+								output = report();
+								}else{
+									output = "INVALID COMMAND TYPE :: Only PLACE command can have parameters";
+									return output;
+								}}
 							break;
 				default:
 							output = "";
 			}
+		}else{
+			output = "INVALID INPUT FILE :: Invalid Command found in input file";
+			return output;
+		}
 		}
 		if(count == 0)
 			output = "INVALID INPUT FILE :: No Valid Place Commands Found in Input File";
@@ -126,22 +151,45 @@ public class ToyRobotSimulator {
 	}
 	
 	/**
+	 * Method : isValidPlaceCommand
+	 * 			VAlidate the format of the Place Command
+	 * @param commands String
+	 * @return boolean
+	 */
+	private boolean isValidPlaceCommand(String command) {
+
+		boolean flag = true;
+		String[] placeArguments = command.split(" ");
+		if(placeArguments.length < 2){
+			flag = false;
+			return flag;
+		}
+		String[] positionParams = placeArguments[1].split(",");
+		if(positionParams.length < 3 || positionParams[0] == null || 
+				positionParams[1] == null || positionParams[2] == null)
+			flag = false;
+		
+		return flag;
+	}
+
+	/**
 	 * Method : validateFormat
 	 * 			VAlidate the format of the various input commands
 	 * @param commands String
-	 * @return void
+	 * @return boolean
 	 */
-	private void validateFormat(String command) throws ToyRobotException {
+	private boolean validateFormat(String command) throws ToyRobotException {
 		// TODO Auto-generated method stub
+		boolean output = true;
 		if(command.toUpperCase().contains(Command.MOVE.toString().toUpperCase()) || 
 				command.toUpperCase().contains(Command.REPORT.toString().toUpperCase()) ||
 				command.toUpperCase().contains(Command.LEFT.toString().toUpperCase()) ||
 				command.toUpperCase().contains(Command.RIGHT.toString().toUpperCase())){
 			String[] cmdParams = command.split(" ");
 			if(cmdParams.length > 1)
-				throw new ToyRobotException("INVALID COMMAND TYPE :: "+command.toUpperCase()+" cannot have parameters");
+				output = false;
 		}
-		
+		return output;
 	}
 	
 	/**
@@ -166,13 +214,7 @@ public class ToyRobotSimulator {
 	private Position getPlaceParameters(String command) throws ToyRobotException {
 		
 		String[] placeArguments = command.split(" ");
-		if(placeArguments.length < 2)
-			throw new ToyRobotException("INVALID COMMAND : Place Command Format is invalid");
 		String[] positionParams = placeArguments[1].split(",");
-		if(positionParams.length < 3 || positionParams[0] == null || 
-				positionParams[1] == null || positionParams[2] == null){
-			throw new ToyRobotException("INVALID PLACE COMMAND STRUCTURE");
-		}
 		Position position = new Position(Integer.parseInt(positionParams[0]), 
 				Integer.parseInt(positionParams[1]), Direction.valueOf(positionParams[2].toUpperCase()));
 		return position;
